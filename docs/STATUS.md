@@ -45,7 +45,7 @@
 
 ## HARDWARE
 | Server 1 | WARN | ⚠ Backorder 6–8 wk | Primary inference · text models · Open WebUI |
-| Server 2 | OK | ✓ On order | Visual extraction · image models · 128 GB |
+| Server 2 | OK | ✓ Arrived — pending setup | Visual extraction · image models · 128 GB |
 | Dev Workstation | READY | ✓ Configured | Development environment · Phase 1A |
 
 ## NEXT_ACTION
