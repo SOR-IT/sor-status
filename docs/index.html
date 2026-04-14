@@ -117,6 +117,14 @@ h1 span{color:var(--lehua)}
 .next-text{font-size:13px;color:var(--white);line-height:1.6}
 .next-text code{font-family:var(--mono);font-size:11px;background:rgba(235,90,60,.15);color:var(--lehua);padding:1px 5px;border-radius:2px}
 
+.hw-card{background:rgba(50,75,90,.2);border:1px solid rgba(70,95,115,.35);border-radius:2px;padding:14px 16px}
+.hw-name{font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px}
+.hw-role{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+.hw-status{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:2px;display:inline-block}
+.hw-status.ok{background:rgba(46,204,138,.12);color:var(--green)}
+.hw-status.warn{background:rgba(245,166,35,.12);color:var(--amber)}
+.hw-status.neutral{background:rgba(70,95,115,.3);color:var(--white)}
+.hw-status.bad{background:rgba(235,90,60,.12);color:var(--lehua)}
 /* LOADING */
 .loading{text-align:center;padding:80px 0;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.08em}
 .spinner{width:24px;height:24px;border:2px solid rgba(70,95,115,.3);border-top-color:var(--lehua);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
@@ -165,13 +173,22 @@ h1 span{color:var(--lehua)}
         <div class="program">
           <div class="prog-header" id="ai-header">
             <div class="prog-num">Program 02</div>
-            <div class="prog-name">AI Estimating Pipeline</div>
+            <div class="prog-name">Estimating Pipeline</div>
             <div class="status-pill" id="ai-pill"><span class="dot"></span><span id="ai-pill-text"></span></div>
             <div class="prog-detail" id="ai-detail"></div>
           </div>
           <div class="prog-milestones" id="ai-milestones"></div>
         </div>
       </div>
+    </div>
+
+    <!-- HARDWARE -->
+    <div class="section" id="hw-section" style="display:none">
+      <div class="section-head">
+        <div class="section-title">Hardware Status</div>
+        <div class="section-line"></div>
+      </div>
+      <div id="hw-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px"></div>
     </div>
 
     <!-- NEXT ACTION -->
@@ -239,7 +256,31 @@ function parseMilestones(md, heading){
   }));
 }
 
-function parseNextAction(md){
+function parseHardware(md){
+  const rows = parseSection(md, 'HARDWARE');
+  return rows.map(cols => ({
+    name:   cols[0]||'',
+    state:  (cols[1]||'READY').toUpperCase(),
+    label:  cols[2]||'',
+    role:   cols[3]||''
+  }));
+}
+
+function renderHardware(items){
+  const el = document.getElementById('hw-grid');
+  const sec = document.getElementById('hw-section');
+  if(!items||items.length===0){ sec.style.display='none'; return; }
+  sec.style.display='';
+  const stClass = {OK:'ok', WARN:'warn', READY:'neutral', BAD:'bad'};
+  el.innerHTML = items.map(h=>`
+    <div class="hw-card">
+      <div class="hw-name">${h.name}</div>
+      <div class="hw-role">${h.role}</div>
+      <div class="hw-status ${stClass[h.state]||'neutral'}">${h.label}</div>
+    </div>`).join('');
+}
+
+
   const i = md.indexOf('## NEXT_ACTION');
   if(i===-1) return '';
   const rest = md.slice(i+14);
@@ -292,6 +333,10 @@ function render(md, sha){
   const aiStatus = parseStatus(md, 'AI_STATUS');
   const aiMs     = parseMilestones(md, 'AI_MILESTONES');
   renderProgram('ai-header','ai-pill','ai-pill-text','ai-detail','ai-milestones', aiStatus, aiMs);
+
+  // Hardware
+  const hw = parseHardware(md);
+  renderHardware(hw);
 
   // Next action
   const nxt = parseNextAction(md);

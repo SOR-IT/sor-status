@@ -24,6 +24,11 @@
 | status | PENDING |
 | detail | Phase 0 complete. GitHub repo live — 36 files, CI 16/16 green. Dev environment on MacBook Pro configured and verified. Hardware on order. |
 
+## HARDWARE
+| Server 1 | WARN | ⚠ Backorder 6–8 wk | Primary inference · text models · Open WebUI |
+| Server 2 | OK | ✓ On order | Visual extraction · image models · 128 GB |
+| Dev Workstation | READY | ✓ Configured | Development environment · Phase 1A |
+
 ## AI_MILESTONES
 | planning | DONE | Planning & architecture complete | Executive summary · project plan · combined timeline |
 | repo | DONE | GitHub repository live | 36 files · CI 16/16 green · main + staging branches |
