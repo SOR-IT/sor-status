@@ -280,7 +280,7 @@ function renderHardware(items){
     </div>`).join('');
 }
 
-
+function parseNextAction(md){
   const i = md.indexOf('## NEXT_ACTION');
   if(i===-1) return '';
   const rest = md.slice(i+14);
